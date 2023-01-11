@@ -10,4 +10,5 @@ import javax.validation.Valid;
 public interface IProductService  {
 	 public long addProduct(@Valid ProductRequest product); 
 	 public ProductResponse getProductById(long productId);
+	 void reduceQuantity(long productId,long productQuantity);
 }

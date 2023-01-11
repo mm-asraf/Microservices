@@ -19,10 +19,11 @@ import lombok.extern.log4j.Log4j2;
 public class ProductServiceImpl implements IProductService {
 	@Autowired
 	private IProductRepository iProductRepo;
-	
+
 	@Override
 	public long addProduct(@Valid ProductRequest productRequest) {
 		log.info("product added...");
+		System.out.println("--------------"+ productRequest.getProductQuantity());
 		Product product = Product.builder()
 				.productName(productRequest.getProductName()) 
 				.productPrice(productRequest.getProductPrice())
@@ -42,4 +43,24 @@ public class ProductServiceImpl implements IProductService {
 		return productResponse;
 	}
 
+	@Override
+	public void reduceQuantity(long productId, long quantity) {
+		log.info("Reduce Quantity {} for Id: {}", quantity,productId);
+		Product product = iProductRepo.findById(productId).orElseThrow(()->{throw new ProductServiceExceptionHandler(
+				"Product with given Id not found",
+				"PRODUCT_NOT_FOUND");
+		});
+
+		if(product.getProductQuantity()< quantity) {
+			throw new ProductServiceExceptionHandler(
+					"Product does not have sufficient Quantity",
+					"INSUFFICIENT_QUANTITY"
+					);
+		}
+
+		product.setProductQuantity(product.getProductQuantity() - quantity);
+		iProductRepo.save(product);
+		log.info("Product Quantity updated Successfully");
+
+	}
 }

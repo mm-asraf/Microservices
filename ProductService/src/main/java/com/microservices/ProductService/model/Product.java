@@ -1,5 +1,6 @@
 package com.microservices.ProductService.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,12 +17,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Product {
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long productId;
 	private String productName;
-	private String productPrice;
-	private String productQuantity;
+	private long productPrice;
+	private long productQuantity;
 
 }
